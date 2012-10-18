@@ -1,8 +1,8 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-/* Name: Yang Peng
- * Login: cs61b-kk
- * SID: 21093456
+/*
+ * 
+ *
  * Collaborations: None with any other people, but some of them are from OpenCommercial.java
  */
 
