@@ -52,6 +52,10 @@ public class DList {
    */
   public DList() {
     //  Your solution here.
+	  size = 0;
+	  head = newNode(null, null, null);
+	  head.next = head;
+	  head.prev = head;
   }
 
   /**
@@ -79,6 +83,16 @@ public class DList {
    */
   public void insertFront(Object item) {
     // Your solution here.
+		  if (size == 0){
+			 DListNode node = newNode(item, head, head);
+			 head.next = node;
+			 head.prev = node;
+		  }else{
+			  DListNode node = newNode(item, head, head.next);
+			  head.next = node;
+			  head.next.next.prev = node;
+		  }
+		  size++;
   }
 
   /**
@@ -88,6 +102,17 @@ public class DList {
    */
   public void insertBack(Object item) {
     // Your solution here.
+	 if (size ==0){
+		 DListNode node = newNode(item, head, head);
+		 head.prev = node;
+		 head.next = node;
+	 }else{
+		 DListNode node = newNode(item, head.prev, head);
+		 head.prev = node;
+		 head.prev.prev.next = node;
+		 
+	 }
+	 size++;
   }
 
   /**
@@ -101,6 +126,11 @@ public class DList {
    */
   public DListNode front() {
     // Your solution here.
+	  if (size == 0){
+		  return null;
+	  }else{
+		  return head.next;
+	  }
   }
 
   /**
@@ -114,6 +144,11 @@ public class DList {
    */
   public DListNode back() {
     // Your solution here.
+	  if (size ==0){
+		  return null;
+	  }else{
+		  return head.prev;
+	  }
   }
 
   /**
@@ -128,6 +163,13 @@ public class DList {
    */
   public DListNode next(DListNode node) {
     // Your solution here.
+	  if (node == null){
+		  return null;
+	  }else if(node.next == head){
+		  return null;
+	  }else{
+		  return node.next;
+	  }
   }
 
   /**
@@ -142,6 +184,13 @@ public class DList {
    */
   public DListNode prev(DListNode node) {
     // Your solution here.
+	  if (node == null){
+		  return null;
+	  }else if (node == head.next){
+		  return null;
+	  }else{
+		  return node.prev;
+	  }
   }
 
   /**
@@ -153,6 +202,13 @@ public class DList {
    */
   public void insertAfter(Object item, DListNode node) {
     // Your solution here.
+	  if (node == null){
+		  return;
+	  }
+	  DListNode node1 = node.next;
+	  node.next = newNode(item, node, node1);
+	  node1.prev = node.next;
+	  size++;
   }
 
   /**
@@ -164,6 +220,13 @@ public class DList {
    */
   public void insertBefore(Object item, DListNode node) {
     // Your solution here.
+	  if (node == null){
+		  return;
+	  }
+	  DListNode node1 = node.prev;
+	  node.prev = newNode(item, node1, node);
+	  node1.next = node.prev;
+	  size++;
   }
 
   /**
@@ -172,6 +235,13 @@ public class DList {
    */
   public void remove(DListNode node) {
     // Your solution here.
+	  if (node == null){
+		  return;
+	  }
+	  node.prev.next = node.next;
+	  node.next.prev = node.prev;
+	  node = null;
+	  size--;
   }
 
   /**
@@ -190,5 +260,103 @@ public class DList {
       current = current.next;
     }
     return result + "]";
+  }
+  public static void main(String[] args){
+	  System.out.println("Testing Constructor...");
+	  DList d = new DList();
+	  System.out.println(d.length());
+	  System.out.println(d.head.item);
+	  
+	  System.out.println("Testing insertFront and insertBack...");
+	  d.insertFront(3);
+	  System.out.println(d.head.next.item);
+	  System.out.println(d.head.prev.item);
+	  d.insertBack(6);
+	  System.out.println(d.head.prev.item);
+	  System.out.println(d.head.prev.prev.item);
+	  System.out.println(d.head.next.next.item);
+	  d.insertFront(2);
+	  System.out.println(d.head.next.item);
+	  System.out.println(d.head.next.next.item);
+	  System.out.println(d.head.prev.prev.prev.item);
+	  d.insertBack(7);
+	  System.out.println(d.head.prev.item);
+	  System.out.println(d.head.prev.prev.item);
+	  System.out.println(d.head.next.next.next.next.item);
+	  System.out.println(d.length());
+	  
+	  //Right now the DList should be head->2->3->6->7->head
+	  System.out.println("Testing front and back...");
+	  System.out.println(d.front().item);
+	  System.out.println(d.back().item);
+	  
+	  System.out.println("Testing next and prev...");
+	  System.out.println(d.next(d.head).item);
+	  System.out.println(d.prev(d.head.next));
+	  System.out.println(d.next(d.head.next.next.next.next));
+	  System.out.println(d.next(d.head.next.next).item);
+	  System.out.println(d.prev(d.head.prev).item);
+	  
+	  
+	  System.out.println("Testing insertAfter and insertBefore");
+	  d.insertAfter(4, d.head.next.next);
+	  DListNode node = d.head;
+	  while(node.next!= d.head){
+		 node = node.next;
+		 System.out.print(node.item);
+	  }
+	  System.out.println("");
+	  d.insertBefore(5, d.head.prev.prev);
+	  node = d.head;
+	  while(node.next!= d.head){
+		 node = node.next;
+		 System.out.print(node.item);
+	  }
+	  System.out.println("");
+	  d.insertAfter(1, d.head);
+	  node = d.head;
+	  while(node.next!= d.head){
+		 node = node.next;
+		 System.out.print(node.item);
+	  }
+	  System.out.println("");
+	  d.insertBefore(8, d.head);
+	  node = d.head;
+	  while(node.next!= d.head){
+		 node = node.next;
+		 System.out.print(node.item);
+	  }
+	  System.out.println("");
+	  System.out.println("Testing remove...");
+	  d.remove(d.head.next);
+	  node = d.head;
+	  while(node.next!= d.head){
+		 node = node.next;
+		 System.out.print(node.item);
+	  }
+	  System.out.println("");
+	  d.remove(d.head.next.next);
+	  node = d.head;
+	  while(node.next!= d.head){
+		 node = node.next;
+		 System.out.print(node.item);
+	  }
+	  System.out.println(""); 
+	  System.out.println(d.length());
+	  d.remove(d.head.prev.prev);
+	  node = d.head;
+	  while(node.next!= d.head){
+		 node = node.next;
+		 System.out.print(node.item);
+	  }
+	  System.out.println("");
+	  d.remove(d.next(d.head.next.next));
+	  node = d.head;
+	  while(node.next!= d.head){
+		 node = node.next;
+		 System.out.print(node.item);
+	  }
+	  System.out.println("");
+	  System.out.println(d.length());
   }
 }
